@@ -48,21 +48,6 @@ install() {
 	show "Linking ${PROG_NAME} installation into %ProgramFiles%"
 	ln ${VERBOSITYFLAG} -s "${GAME_PATH}" "${UNIX_PROGRAM_FILES}"
 
-	SIMS4_WINE_PATH="${UNIX_PROGRAM_FILES}/$(basename "${GAME_PATH}")"
-	if ((ARG_ANADIUS == 1)); then
-		warning "you're about to modify the existing game installation"
-		if ! test_yn_need_enter "Do you want to continue"; then
-			exit 0
-		fi
-		# run anadius' updater
-		pushd "${SIMS4_WINE_PATH}" > /dev/null || die "${SIMS4_WINE_PATH} directory not found"
-			unzip -j "${SCRIPT_DIR}/extra/sims-4-updater-v${ANADIUS_UPDATER_VER}.zip" "sims-4-updater-v${ANADIUS_UPDATER_VER}.exe" -d "${SIMS4_WINE_PATH}"
-			# using 'no-origin-fix' also means the dlc will run without 'dlc unlocker'
-			unrar x -p "${SCRIPT_DIR}/extra/no-origin-fix-${ANADIUS_NO_ORIGIN_VER}-ANADIUS.rar" .
-			wine_env_show "Running anadius' ${PROG_NAME} updater" wine "sims-4-updater-v${ANADIUS_UPDATER_VER}.exe"
-		popd > /dev/null || exit
-	fi
-
 	# launchers
 	show "Installing launch scripts"
 
@@ -143,20 +128,37 @@ EOF
 	update-desktop-database ${VERBOSITYFLAG} "${HOME}/.local/share/applications"
 }
 
+run_updater() {
+	warning "you're about to modify the existing game installation"
+	if ! test_yn_need_enter "Do you want to continue"; then
+		exit 0
+	fi
+	# run anadius' updater
+	UNIX_PROGRAM_FILES=$(windows_to_unix_path programfiles)
+	SIMS4_WINE_PATH="${UNIX_PROGRAM_FILES}/$(basename "${GAME_PATH}")"
+	pushd "${SIMS4_WINE_PATH}" > /dev/null || die "${SIMS4_WINE_PATH} directory not found"
+		unzip -j "${SCRIPT_DIR}/extra/sims-4-updater-v${ANADIUS_UPDATER_VER}.zip" "sims-4-updater-v${ANADIUS_UPDATER_VER}.exe" -d "${SIMS4_WINE_PATH}"
+		# using 'no-origin-fix' also means the dlc will run without 'dlc unlocker'
+		unrar x -p "${SCRIPT_DIR}/extra/no-origin-fix-${ANADIUS_NO_ORIGIN_VER}-ANADIUS.rar" .
+		wine_env_show "Running anadius' ${PROG_NAME} updater" wine "sims-4-updater-v${ANADIUS_UPDATER_VER}.exe"
+	popd > /dev/null || exit
+}
+
 print_usage() {
 	cat << EOF
 Usage: $(basename "${0}") [OPTION]
 
+Required:
 -i, --install       Configures ${PROG_NAME}
 -u, --uninstall     Removes a previous installation
+-a, --anadius       Run anadius' Sims 4 Updater and patch TS4_x64.exe
+                    Note: requires extra downloads from https://anadius.su/sims-4-updater
 
+Other Options:
 -p, --prefix        Set the prefix directory (relative to \${HOME})
                     Note: multiple instances are not supported
 
 -s, --game-dir      Set the directory of ${PROG_NAME} installation
-
--a, --anadius       Run anadius' Sims 4 Updater and patch TS4_x64.exe
-                    Note: requires extra downloads from https://anadius.su/sims-4-updater
 
 -n, --no-inet       Configures a local-only firejail for this WINEPREFIX
 -e, --net-if        Change the interface for --no-inet (default: ${NET_IF})
@@ -180,6 +182,8 @@ EOF
 option_consistency_checks() {
 	if ((ARG_INSTALL == 1 && ARG_UNINSTALL == 1)); then
 		display_usage_message_and_exit "cannot install and uninstall simultaneously"
+	elif ((!ARG_INSTALL && !ARG_UNINSTALL && !ARG_ANADIUS)); then
+		display_usage_message_and_exit "select one of the required actions"
 	fi
 }
 
@@ -251,4 +255,9 @@ process_command_line_options() {
 }
 
 process_command_line_options "${@}"
-install
+if ((ARG_INSTALL == 1)); then
+	install
+fi
+if ((ARG_ANADIUS == 1)); then
+	run_updater
+fi
