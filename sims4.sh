@@ -23,7 +23,7 @@ NET_IF="$(route | grep '^default' | grep -o '[^ ]*$' | head -n1)"
 
 # https://anadius.su/sims-4-updater
 ANADIUS_UPDATER_VER="1.3.2"
-ANADIUS_NO_ORIGIN_VER="1.104.58.1030"
+ANADIUS_NO_ORIGIN_VER="1.106.148.1030"
 
 source "${SCRIPT_DIR}/common.sh"
 
