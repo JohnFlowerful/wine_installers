@@ -11,7 +11,7 @@ PROG_NAME="The Sims 4"
 
 ICON_RES=(16 32 48 256)
 # rough estimate of diskspace usage after all dlc has been downloaded
-REQUIRED_DISKSPACE="62G"
+REQUIRED_DISKSPACE="65G"
 declare -a REQUIRED_COMMANDS REQUIRED_EXTRAS
 
 # program args
