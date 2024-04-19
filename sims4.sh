@@ -43,10 +43,7 @@ install() {
 
 	setup_dxvk
 
-	# get program files path from WINEPREFIX
-	WINE_PROGRAM_FILES="$(wine_env wine cmd.exe /c echo %programfiles% 2> /dev/null)"
-	UNIX_PROGRAM_FILES="$(wine_env winepath -u "${WINE_PROGRAM_FILES}" 2> /dev/null)"
-	UNIX_PROGRAM_FILES="${UNIX_PROGRAM_FILES%$'\r'}" # remove ^M
+	UNIX_PROGRAM_FILES=$(windows_to_unix_path programfiles)
 
 	show "Linking ${PROG_NAME} installation into %ProgramFiles%"
 	ln ${VERBOSITYFLAG} -s "${GAME_PATH}" "${UNIX_PROGRAM_FILES}"

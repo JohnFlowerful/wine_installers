@@ -49,10 +49,8 @@ install() {
 	# see also https://github.com/Winetricks/winetricks/issues/1840
 	if ((ARG_USER_GDIPLUS == 1)); then
 		show "Installing user provided gdiplus.dll"
-		# get system path from WINEPREFIX
-		WINE_SYSTEM="$(wine_env wine cmd.exe /c echo %windir% 2> /dev/null)"
-		UNIX_SYSTEM="$(wine_env winepath -u "${WINE_SYSTEM}" 2> /dev/null)"
-		UNIX_SYSTEM="${UNIX_SYSTEM%$'\r'}" # remove ^M
+
+		UNIX_SYSTEM=$(windows_to_unix_path windir)
 
 		cp ${VERBOSITYFLAG} -f "${SCRIPT_DIR}/extra/gdiplus_x32.dll" "${UNIX_SYSTEM}/syswow64/gdiplus.dll"
 		cp ${VERBOSITYFLAG} -f "${SCRIPT_DIR}/extra/gdiplus_x64.dll" "${UNIX_SYSTEM}/system32/gdiplus.dll"

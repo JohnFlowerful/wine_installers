@@ -180,6 +180,15 @@ check_diskspace() {
 	fi
 }
 
+# converts windows environment variable paths to usable unix ones
+# https://learn.microsoft.com/en-us/windows/deployment/usmt/usmt-recognized-environment-variables
+# 1: environment variable
+windows_to_unix_path() {
+	local windows_path="$(wine_env wine cmd.exe /c echo %${1}% 2> /dev/null)"
+	local unix_path="$(wine_env winepath -u "${windows_path}" 2> /dev/null)"
+	echo "${unix_path%$'\r'}" # removes ^M
+}
+
 get_url_basename() {
 	# decode url and return basename
 	echo "$(basename -- "$(echo "${1}" | sed -e 's/%\([0-9A-F][0-9A-F]\)/\\\\\x\1/g' | xargs echo -e)")"

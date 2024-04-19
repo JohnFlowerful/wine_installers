@@ -49,10 +49,8 @@ install() {
 	#setup_dxvk
 
 	show "Linking GTA: SA installation into %ProgramFiles%"
-	# get program files path from WINEPREFIX
-	WINE_PROGRAM_FILES="$(wine_env wine cmd.exe /c echo %programfiles% 2> /dev/null)"
-	UNIX_PROGRAM_FILES="$(wine_env winepath -u "${WINE_PROGRAM_FILES}" 2> /dev/null)"
-	UNIX_PROGRAM_FILES="${UNIX_PROGRAM_FILES%$'\r'}" # remove ^M
+
+	UNIX_PROGRAM_FILES=$(windows_to_unix_path programfiles)
 
 	mkdir "${UNIX_PROGRAM_FILES}/Rockstar Games"
 	ln ${VERBOSITYFLAG} -s "${GAME_PATH}" "${UNIX_PROGRAM_FILES}/Rockstar Games/GTA San Andreas"

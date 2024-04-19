@@ -55,10 +55,7 @@ install() {
 	# launchers
 	show "Installing launch scripts"
 
-	# get local app data path from WINEPREFIX
-	WINE_LOCALAPPDATA=$(wine_env wine cmd.exe /c echo %localappdata% 2> /dev/null)
-	UNIX_LOCALAPPDATA="$(wine_env winepath -u "${WINE_LOCALAPPDATA}" 2> /dev/null)"
-	UNIX_LOCALAPPDATA=${UNIX_LOCALAPPDATA%$'\r'} # remove ^M
+	UNIX_LOCALAPPDATA=$(windows_to_unix_path localappdata)
 
 	ROON_APP_EXE=${UNIX_LOCALAPPDATA#"${PREFIX}"}$"/Roon/Application/Roon.exe"
 
