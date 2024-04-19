@@ -215,7 +215,7 @@ process_command_line_options() {
 					"") shift 2 ;;
 					*) GAME_PATH="${2}" ; shift 2 ;;
 				esac ;;
-			-n|--no-inet) ARG_NO_INET ; shift ;;
+			-n|--no-inet) ARG_NO_INET=1 ; shift ;;
 			-e|--net-if)
 				case "${2}" in
 					"") shift 2 ;;
@@ -234,6 +234,9 @@ process_command_line_options() {
 	if ((ARG_ANADIUS == 1)); then
 		REQUIRED_COMMANDS+=(unzip unrar)
 		REQUIRED_EXTRAS+=("sims-4-updater-v${ANADIUS_UPDATER_VER}.zip" "no-origin-fix-${ANADIUS_NO_ORIGIN_VER}-ANADIUS.rar")
+	fi
+	if ((ARG_NO_INET == 1)); then
+		REQUIRED_COMMANDS+=(firejail)
 	fi
 	if ((ARG_SYSTEM_DXVK == 1)); then
 		REQUIRED_COMMANDS+=(setup_dxvk.sh)
