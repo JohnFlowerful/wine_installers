@@ -27,7 +27,6 @@ install() {
 
 	# do some basic checks
 	check_file_exists "${GAME_PATH}/gta_sa.exe"
-	check_deps
 	check_prefix_exists
 	check_diskspace "${PREFIX}" "${REQUIRED_DISKSPACE}"
 
@@ -205,6 +204,8 @@ process_command_line_options() {
 		check_prefix_exists
 		exit 0
 	fi
+
+	check_deps
 
 	if ((ARG_INSTALL == 1)); then
 		install

@@ -25,7 +25,6 @@ install() {
 	WINE_ENV="env WINEPREFIX=${PREFIX} WINEDLLOVERRIDES=winemenubuilder.exe=d"
 
 	# do some basic checks
-	check_deps
 	check_diskspace "${PREFIX}" "${REQUIRED_DISKSPACE}"
 	check_prefix_exists
 
@@ -217,6 +216,8 @@ process_command_line_options() {
 		check_prefix_exists
 		exit 0
 	fi
+
+	check_deps
 
 	if ((ARG_INSTALL == 1)); then
 		install
