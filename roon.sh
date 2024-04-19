@@ -57,7 +57,7 @@ install() {
 
 	UNIX_LOCALAPPDATA=$(windows_to_unix_path localappdata)
 
-	ROON_APP_EXE=${UNIX_LOCALAPPDATA#"${PREFIX}"}$"/Roon/Application/Roon.exe"
+	ROON_APP_EXE=${UNIX_LOCALAPPDATA#"${PREFIX}/"}$"/Roon/Application/Roon.exe"
 
 	mkdir -p "${HOME}/.local/bin"
 	cat << EOF > "${HOME}/.local/bin/start_${SCRIPT_NAME}.sh"

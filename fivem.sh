@@ -86,7 +86,7 @@ PREFIX="${PREFIX}"
 
 source "\${PREFIX}/${SCRIPT_NAME}.env"
 
-EXE="\${PREFIX}/${UNIX_PROGRAM_FILES#"${PREFIX}"}/${PROG_NAME}/${FIVEM_EXE}"
+EXE="\${PREFIX}/${UNIX_PROGRAM_FILES#"${PREFIX}/"}/${PROG_NAME}/${FIVEM_EXE}"
 wine "\${EXE}"
 EOF
 	chmod +x "${HOME}/.local/bin/start_${SCRIPT_NAME}.sh"

@@ -74,7 +74,7 @@ PREFIX="${PREFIX}"
 
 source "\${PREFIX}/${SCRIPT_NAME}.env"
 
-EXE="\${PREFIX}/${UNIX_PROGRAM_FILES#"${PREFIX}"}/MTA San Andreas ${MTA_VER}/Multi Theft Auto.exe"
+EXE="\${PREFIX}/${UNIX_PROGRAM_FILES#"${PREFIX}/"}/MTA San Andreas ${MTA_VER}/Multi Theft Auto.exe"
 wine "\${EXE}"
 EOF
 	chmod ${VERBOSITYFLAG} +x "${HOME}/.local/bin/start_${SCRIPT_NAME}.sh"

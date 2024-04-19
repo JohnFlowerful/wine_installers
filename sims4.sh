@@ -76,7 +76,7 @@ source "\${PREFIX}/${SCRIPT_NAME}.env"
 
 NET_IF="${NET_IF}"
 
-EXE="\${PREFIX}/${UNIX_PROGRAM_FILES#"${PREFIX}"}/$(basename "${GAME_PATH}")/Game/Bin/TS4_x64.exe"
+EXE="\${PREFIX}/${UNIX_PROGRAM_FILES#"${PREFIX}/"}/$(basename "${GAME_PATH}")/Game/Bin/TS4_x64.exe"
 wine "\${EXE}"
 EOF
 	chmod ${VERBOSITYFLAG} +x "${HOME}/.local/bin/start_${SCRIPT_NAME}.sh"
