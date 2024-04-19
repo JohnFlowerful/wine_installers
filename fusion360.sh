@@ -126,9 +126,11 @@ print_usage() {
 	cat << EOF
 Usage: $(basename "${0}") [OPTION]
 
+Required:
 -i, --install       Download and install ${ORG_NAME} ${PROG_NAME}
 -u, --uninstall     Removes a previous installation
 
+Other Options:
 -p, --prefix        Set the prefix path relative to \${HOME}
                     Note: multiple instances are not supported
 
@@ -155,6 +157,8 @@ EOF
 option_consistency_checks() {
 	if ((ARG_INSTALL == 1 && ARG_UNINSTALL == 1)); then
 		display_usage_message_and_exit "cannot install and uninstall simultaneously"
+	elif ((!ARG_INSTALL && !ARG_UNINSTALL)); then
+		display_usage_message_and_exit "select one of the required actions"
 	fi
 }
 
@@ -207,11 +211,15 @@ process_command_line_options() {
 	if ((ARG_HELP == 1)); then
 		print_help
 		exit 0
-	elif ((ARG_UNINSTALL == 1)); then
+	fi
+	if ((ARG_UNINSTALL == 1)); then
 		check_prefix_exists
 		exit 0
+	fi
+
+	if ((ARG_INSTALL == 1)); then
+		install
 	fi
 }
 
 process_command_line_options "${@}"
-install

@@ -204,6 +204,7 @@ process_command_line_options() {
 		case "${1}" in
 			-i|--install) ARG_INSTALL=1 ; shift ;;
 			-u|--uninstall) ARG_UNINSTALL=1 ; shift ;;
+			-a|--anadius) ARG_ANADIUS=1 ; shift ;;
 			-p|--prefix)
 				case "${2}" in
 					"") shift 2 ;;
@@ -214,7 +215,6 @@ process_command_line_options() {
 					"") shift 2 ;;
 					*) GAME_PATH="${2}" ; shift 2 ;;
 				esac ;;
-			-a|--anadius) ARG_ANADIUS=1 ; shift ;;
 			-n|--no-inet) ARG_NO_INET ; shift ;;
 			-e|--net-if)
 				case "${2}" in
@@ -248,16 +248,18 @@ process_command_line_options() {
 	if ((ARG_HELP == 1)); then
 		print_help
 		exit 0
-	elif ((ARG_UNINSTALL == 1)); then
+	fi
+	if ((ARG_UNINSTALL == 1)); then
 		check_prefix_exists
 		exit 0
+	fi
+
+	if ((ARG_INSTALL == 1)); then
+		install
+	fi
+	if ((ARG_ANADIUS == 1)); then
+		run_updater
 	fi
 }
 
 process_command_line_options "${@}"
-if ((ARG_INSTALL == 1)); then
-	install
-fi
-if ((ARG_ANADIUS == 1)); then
-	run_updater
-fi
