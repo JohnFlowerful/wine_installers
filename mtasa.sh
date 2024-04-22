@@ -23,8 +23,6 @@ GAME_PATH="${HOME}/.steam/steam/steamapps/common/Grand Theft Auto San Andreas"
 source "${SCRIPT_DIR}/common.sh"
 
 install() {
-	WINE_ENV="env WINEPREFIX=${PREFIX} WINEDLLOVERRIDES=winemenubuilder.exe=d WINEARCH=win32"
-
 	# do some basic checks
 	check_file_exists "${GAME_PATH}/gta_sa.exe"
 	check_prefix_exists
@@ -185,6 +183,7 @@ process_command_line_options() {
 	done
 
 	PREFIX="${HOME}/${PREFIX_PATH}"
+	WINE_ENV="env WINEPREFIX=${PREFIX} WINEDLLOVERRIDES=winemenubuilder.exe=d WINEARCH=win32"
 
 	if ((ARG_SYSTEM_DXVK == 1)); then
 		REQUIRED_COMMANDS+=(setup_dxvk.sh)

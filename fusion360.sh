@@ -27,8 +27,6 @@ install() {
 	if ! test_yn_need_enter "Have you read https://github.com/cryinkfly/Autodesk-Fusion-360-for-Linux/issues/311"; then
 		exit 0
 	fi
-
-	WINE_ENV="env WINEPREFIX=${PREFIX} WINEDLLOVERRIDES=winemenubuilder.exe=d"
 	
 	# do some basic checks
 	check_prefix_exists
@@ -193,6 +191,7 @@ process_command_line_options() {
 	done
 
 	PREFIX="${HOME}/${PREFIX_PATH}"
+	WINE_ENV="env WINEPREFIX=${PREFIX} WINEDLLOVERRIDES=winemenubuilder.exe=d"
 
 	if ((ARG_USER_GDIPLUS == 1)); then
 		REQUIRED_EXTRAS+=("gdiplus_x32.dll" "gdiplus_x64.dll")

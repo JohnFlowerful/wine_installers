@@ -28,8 +28,6 @@ ANADIUS_NO_ORIGIN_VER="1.106.148.1030"
 source "${SCRIPT_DIR}/common.sh"
 
 install() {
-	WINE_ENV="env WINEPREFIX=${PREFIX} WINEDLLOVERRIDES=winemenubuilder.exe=d"
-
 	# do some basic checks
 	check_file_exists "${GAME_PATH}/Game/Bin/TS4_x64.exe"
 	check_prefix_exists
@@ -229,6 +227,7 @@ process_command_line_options() {
 	done
 
 	PREFIX="${HOME}/${PREFIX_PATH}"
+	WINE_ENV="env WINEPREFIX=${PREFIX} WINEDLLOVERRIDES=winemenubuilder.exe=d"
 
 	if ((ARG_ANADIUS == 1)); then
 		REQUIRED_COMMANDS+=(unzip unrar)
