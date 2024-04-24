@@ -179,8 +179,6 @@ EOF
 option_consistency_checks() {
 	if ((ARG_INSTALL == 1 && ARG_UNINSTALL == 1)); then
 		display_usage_message_and_exit "cannot install and uninstall simultaneously"
-	elif ((!ARG_INSTALL && !ARG_UNINSTALL && !ARG_ANADIUS)); then
-		display_usage_message_and_exit "select one of the required actions"
 	fi
 }
 
@@ -254,15 +252,13 @@ process_command_line_options() {
 		check_prefix_exists
 		exit 0
 	fi
-
-	check_deps
-
-	if ((ARG_INSTALL == 1)); then
-		install
-	fi
-	if ((ARG_ANADIUS == 1)); then
-		run_updater
-	fi
 }
 
 process_command_line_options "${@}"
+check_deps
+if ((ARG_INSTALL == 1)); then
+	install
+fi
+if ((ARG_ANADIUS == 1)); then
+	run_updater
+fi
