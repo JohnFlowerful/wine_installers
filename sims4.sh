@@ -93,6 +93,9 @@ EOF
 
 	if ((ARG_NO_INET == 1)); then
 		show "Configuring launch scripts for firejail"
+		# shellcheck disable=SC2016
+		sed -re 's|wine "\$\{EXE\}"|firejail --noprofile --net=${NET_IF} --netfilter="${PREFIX}/local_only.net" wine "${EXE}" -alwaysoffline|' \
+			-i "${HOME}/.local/bin/start_${SCRIPT_NAME}.sh"
 		# firejail local only filter
 		cat << EOF > "${PREFIX}/local_only.net"
 *filter
@@ -114,9 +117,6 @@ EOF
 
 COMMIT
 EOF
-		# shellcheck disable=SC2016
-		sed -re 's|wine "\$\{EXE\}"|firejail --noprofile --net=${NET_IF} --netfilter="${PREFIX}/local_only.net" wine "${EXE}" -alwaysoffline|' \
-			-i "${HOME}/.local/bin/start_${SCRIPT_NAME}.sh"
 	fi
 
 	install_icons
