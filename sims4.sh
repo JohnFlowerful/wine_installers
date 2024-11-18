@@ -29,7 +29,8 @@ source "${SCRIPT_DIR}/common.sh"
 
 install() {
 	# do some basic checks
-	check_prefix
+	check_prefix_exists
+	check_diskspace "${PREFIX}" "${REQUIRED_DISKSPACE}"
 
 	# main installation process
 	wine_env_show "Initialising WINEPREFIX (${PREFIX})" wineboot --init
@@ -123,15 +124,10 @@ EOF
 	update-desktop-database ${VERBOSITYFLAG} "${HOME}/.local/share/applications"
 }
 
-check_prefix() {
-	check_file_exists "${GAME_PATH}/Game/Bin/TS4_x64.exe"
-	check_prefix_exists
-	check_diskspace "${PREFIX}" "${REQUIRED_DISKSPACE}"
-}
-
 run_updater() {
 	# do some basic checks
-	check_prefix
+	check_file_exists "${GAME_PATH}/Game/Bin/TS4_x64.exe"
+	check_diskspace "${PREFIX}" "${REQUIRED_DISKSPACE}"
 
 	warning "you're about to modify the existing game installation"
 	if ! test_yn_need_enter "Do you want to continue"; then
