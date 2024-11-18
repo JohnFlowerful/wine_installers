@@ -22,8 +22,8 @@ GAME_PATH="${HOME}/.steam/steam/steamapps/common/The Sims 4"
 NET_IF="$(route | grep '^default' | grep -o '[^ ]*$' | head -n1)"
 
 # https://anadius.su/sims-4-updater
-ANADIUS_UPDATER_VER="1.3.2"
-ANADIUS_NO_ORIGIN_VER="1.106.148.1030"
+ANADIUS_UPDATER_VER="1.4.1"
+ANADIUS_NO_ORIGIN_VER="1.110.311.1020"
 
 source "${SCRIPT_DIR}/common.sh"
 
@@ -137,10 +137,11 @@ run_updater() {
 	UNIX_PROGRAM_FILES=$(windows_to_unix_path programfiles)
 	SIMS4_WINE_PATH="${UNIX_PROGRAM_FILES}/$(basename "${GAME_PATH}")"
 	pushd "${SIMS4_WINE_PATH}" > /dev/null || die "${SIMS4_WINE_PATH} directory not found"
-		unzip -j "${SCRIPT_DIR}/extra/sims-4-updater-v${ANADIUS_UPDATER_VER}.zip" "sims-4-updater-v${ANADIUS_UPDATER_VER}.exe" -d "${SIMS4_WINE_PATH}"
+		local anadius_str="sims-4-updater-v${ANADIUS_UPDATER_VER}"
+		unzip -j "${SCRIPT_DIR}/extra/${anadius_str}.zip" "${anadius_str}/${anadius_str}.exe" -d "${SIMS4_WINE_PATH}"
 		# using 'no-origin-fix' also means the dlc will run without 'dlc unlocker'
 		unrar x -p "${SCRIPT_DIR}/extra/no-origin-fix-${ANADIUS_NO_ORIGIN_VER}-ANADIUS.rar" .
-		wine_env_show "Running anadius' ${PROG_NAME} updater" wine "sims-4-updater-v${ANADIUS_UPDATER_VER}.exe"
+		wine_env_show "Running anadius' ${PROG_NAME} updater" wine "${anadius_str}.exe"
 	popd > /dev/null || exit
 }
 
