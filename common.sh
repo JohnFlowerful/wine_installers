@@ -117,7 +117,7 @@ check_prefix_exists() {
 			exit 0
 		fi
 	fi
-	mkdir "${PREFIX}"
+	mkdir -p "${PREFIX}"
 }
 
 # used for wine commands that output values to stdout or otherwise can't be
